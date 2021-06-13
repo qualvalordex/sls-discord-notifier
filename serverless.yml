@@ -1,0 +1,18 @@
+service: sls-discord-notifier
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'sa-east-1'}
+  memorySize: 128
+  timeout: 3
+
+  functions:
+    index:
+      handler: index.handler
+      description: Message specific channel each time a file was uploaded to S3 bucket.
+      events:
+        - s3:
+          bucket: my-test-bucket
+          event: s3:ObjectCreated:*
