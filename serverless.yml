@@ -7,12 +7,19 @@ provider:
   region: ${opt:region, 'sa-east-1'}
   memorySize: 128
   timeout: 3
+  s3:
+    oneBucket:
+      name: sls-discord-notifier
 
-  functions:
-    index:
-      handler: index.handler
-      description: Message specific channel each time a file was uploaded to S3 bucket.
-      events:
-        - s3:
-          bucket: my-test-bucket
-          event: s3:ObjectCreated:*
+
+functions:
+  index:
+    handler: index.handler
+    description: Message specific channel each time a file was uploaded to S3 bucket.
+    events:
+      - s3:
+        bucket: sls-discord-notifier
+        event: s3:ObjectCreated:*
+    environment:
+      DISCORD_WEBHOOK_ID: YOUR_DISCORD_WEBHOOK_ID_HERE
+      DISCORD_WEBHOOK_TOKEN: YOUR_DISCORD_WEBHOOK_TOKEN_HERE
